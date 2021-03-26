@@ -1,6 +1,6 @@
 import { HashRouter as Router, Redirect, Route } from "react-router-dom";
-import Detail from "./routes/Detail";
-import Home from "./routes/Home";
+import Detail from "./Routes/Detail";
+import Home from "./Routes/Home";
 const App = () => {
   // Props and states
   return (
