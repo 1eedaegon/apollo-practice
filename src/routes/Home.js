@@ -1,23 +1,72 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import Header from "../Components/Header";
+import styled from "styled-components";
+import Movie from "../Components/Movie";
 
 const GET_MOVIES = gql`
   {
-    movies(limit: 5) {
+    movies(limit: 20) {
       id
       title
+      medium_cover_image
     }
   }
 `;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+const Header = styled.header`
+  background-image: linear-gradient(-45deg, #d754ab, #fd723a);
+  height: 45vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+const Title = styled.h1`
+  font-size: 60px;
+  font-weight: 600;
+  margin-bottom: 20px;
+`;
+const Subtitle = styled.h3`
+  font-size: 35px;
+`;
+const Loading = styled.div`
+  font-size: 18px;
+  opacity: 0.5;
+  font-weight: 500;
+  margin-top: 10px;
+`;
+const Movies = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 25px;
+  width: 60%;
+  position: relative;
+  top: -50px;
+`;
 const Home = () => {
   const { loading, data } = useQuery(GET_MOVIES);
-  return loading ? (
-    <Header text={"Now loading..."} />
-  ) : data && data.movies ? (
-    data.movies.map((m) => <Header key={m.id} text={`${m.id},${m.title}`} />)
-  ) : (
-    <Header text={"Not exist :("} />
+  return (
+    <Container>
+      <Header>
+        <Title>Apollo Moive API</Title>
+        <Subtitle>I like movies!</Subtitle>
+      </Header>
+      {loading && <Loading>Loading...</Loading>}
+      {!loading && data.movies && (
+        <Movies>
+          {data.movies.map((m) => (
+            <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+          ))}
+        </Movies>
+      )}
+    </Container>
   );
 };
 export default Home;
